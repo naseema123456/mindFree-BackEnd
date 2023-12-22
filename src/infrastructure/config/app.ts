@@ -1,5 +1,6 @@
 import express from 'express'
-import userRouter from '../route/userRoute'
+import userRouter from '../route/userRoute';
+import adminRouter from '../route/adminRoute';
 // import adminRouter from '../route/adminRoute'
 import path from 'path';
 const cors = require('cors')
@@ -17,6 +18,7 @@ export const createServer = () => {
 
           // Routes
           app.use('/user', userRouter)
+          app.use('/admin', adminRouter)
 
 
         return app

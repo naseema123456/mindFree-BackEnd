@@ -12,5 +12,6 @@ const router = express.Router()
 router.post('/register',(req,res)=>controller.register(req,res))
 router.post('/verify-otp',(req,res)=> controller.verifyOtp(req,res))
 router.post('/login',(req,res)=>controller.login(req,res))
+router.post('/logout',(req,res)=>controller.login(req,res))
 
 export default router
