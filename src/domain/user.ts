@@ -12,12 +12,14 @@ interface User {
     isVerified: boolean,
 
     address?: {
-        streetAddress: string,
-        landmark: string,
-        city: string,
-        state: string,
-        country: string,
-        pincode: string,
+        name: String,
+        house: String,
+        post: String,
+        pin: Number,
+        contact: Number,
+        state: String,
+        District: String,
+       
     },
 
     createdAt?: Date,

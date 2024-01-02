@@ -102,10 +102,10 @@ if (userData) {
 }
 
 
-async editUser(isBlocked:boolean,role:string,id:string){
+async editUser(role:string,id:string){
   try {
-    console.log(isBlocked,role,'repository.................');
-    const editData = await UserModel.updateOne({ _id: id }, { $set: { isBlocked, role } });
+    console.log(role,'repository.................');
+    const editData = await UserModel.updateOne({ _id: id }, { $set: {  role } });
     console.log(editData);
     
     if (editData.  modifiedCount === 1) {
@@ -125,7 +125,42 @@ async editUser(isBlocked:boolean,role:string,id:string){
 
         }
 
+async Bloked(isBlocked:boolean,id:string){
+  try {
+    console.log("repo...........");
+    if(isBlocked===true){
 
+      let Blocked = await UserModel.updateOne({ _id: id }, { $set: { isBlocked :false} });
+      console.log(Blocked);
+      if (Blocked.  modifiedCount === 1) {
+        // Successfully updated one document
+        console.log('User unblocked successfully');
+        return { success: true, message: 'User unblocked successfully' };
+    } else {
+        // No document was modified, meaning the user with the provided ID might not exist
+        console.log('User not found or not updated');
+        return { success: false, message: 'User not found or not updated' };
+    }
+    }else{
+      let Blocked = await UserModel.updateOne({ _id: id }, { $set: { isBlocked :true} });
+      console.log(Blocked);
+      if (Blocked.  modifiedCount === 1) {
+        // Successfully updated one document
+        console.log('User blocked successfully');
+        return { success: true, message: 'User blocked successfully' };
+    } else {
+        // No document was modified, meaning the user with the provided ID might not exist
+        console.log('User not found or not updated');
+        return { success: false, message: 'User not found or not updated' };
+    }
+    }
+
+    
+
+  } catch (error) {
+    
+  }
+}
       }
 
 export default AdminRepository

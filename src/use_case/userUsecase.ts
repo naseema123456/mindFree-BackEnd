@@ -6,6 +6,7 @@ import OtpRepository from "../infrastructure/repository/otpRepository";
 import Otp from "../domain/otp";
 import mongoose, { Types } from "mongoose";
 import { errorMonitor } from "nodemailer/lib/xoauth2";
+import { UserModel } from "../infrastructure/database/userModel";
 
 
 class Userusecase{
@@ -62,15 +63,13 @@ class Userusecase{
 
         if (saveOtp?.success) {
 
-            const userId = response.user?._id?.toString() || '';
-            const role = response.user?.role || ''
-            const token = this.jwtToken.createJWT(userId, role);
+            
             return {
                 status: 200,
                 success: true,
                 message: response.message + " & " + "otp Sent",
                 // user:NewUser,
-                token,
+              
                 user: response?.user,
                 email: response.user?.email,
                 id: response.user?._id
@@ -91,7 +90,7 @@ class Userusecase{
 
 
     
-    async verifyOtp( otp:number, id: string): Promise<{ success: boolean, message: string }> {
+    async verifyOtp( otp:number, id: string): Promise<{ success: boolean, message: string ,}> {
         try {
          
 console.log(otp,id,'............');
@@ -100,12 +99,16 @@ console.log(otp,id,'............');
             const isOtpValid = await this.otpRepository.findOtpByidAndCode(id, otp);;
 
   
+     console.log(isOtpValid,'..........');
      
 
-            if(isOtpValid.success){            
+            if(isOtpValid.success){      
+    
                     return {
                         success: true,
-                        message: 'OTP verified and user updated'
+                        message: 'OTP verified and user updated',
+                   
+                        
                     };
                 } else {
                     return {
@@ -153,9 +156,9 @@ console.log(otp,id,'............');
                     const userId = storedUser?._id?.toString() || '';
                     const role = storedUser?.role || ''
                     const token = this.jwtToken.createJWT(userId, role);
-                    
-                    
-                 
+                   
+                    // const accessToken = this.jwtToken.generateAccessToken(userId.role)
+                    // const refreshToken = this.jwt.generateRefreshToken(userData._id)
                     // Password is correct then // checking is blocked or not
                     
                     if (storedUser?.isBlocked) {
@@ -176,9 +179,7 @@ console.log(otp,id,'............');
 
                     }
 
-
-
-
+                    
                     return {
                         status: 200,
                         token,
@@ -217,10 +218,116 @@ console.log(otp,id,'............');
 
 
 
+    async resendotp(id:string, otp: number){
+        try {
+            let objectId: mongoose.Types.ObjectId;
+
+    if (typeof id === 'string') {
+      // If id is a string, create ObjectId from the string
+      objectId = mongoose.Types.ObjectId.createFromHexString(id);
+    } else {
+      objectId = id;
+    }
+    console.log(objectId, otp);
+            let otpDetails: Otp = {
+           
+                id: objectId , 
+                otp,
+                expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+                createdAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
+            }
+    
+    
+        
+            const saveOtp = await this.otpRepository.SaveOtp(otpDetails)
+    
+       console.log(saveOtp,'usecase,saveotp......');
+       
+            if (saveOtp?.success) {
+
+            
+                return {
+                    status: 200,
+                    success: true,
+                    message: "otp Sent",
+                   
+                    id:id
+                }
+    
+            }
+        
+        } catch (error) {
+            return {
+                status: 500,
+                success: false,
+                message: "server error"
+    
+            }
+    }
+        
 
 
 
+    }
+    async resetpassword(password:string,id:string){
+try {
+    const newPassword = await this.encrypt.createHash(password);
+    const response = await this.userRepository.resetpassword(newPassword,id)
+    
+    if (response.success) {
+        return {
+          status: 200,
+          success: true,
+          message: 'Password reset successful',
+        };
+      } else {
+        return {
+          status: 400, // or appropriate HTTP status code
+          success: false,
+          message: response.message,
+        };
+      }
+} catch (error) {
+    return {
+        status: 500,
+        success: false,
+        message: "server error"
 
+    }
+}
+}
+   async profile(token:string|undefined){
+try {
+    console.log("use profile");
+    
+    const claims = this.jwtToken.verifyJWT(token)
+
+    
+    if(!claims) return {
+        status: 401,
+        success: false,
+        message: "Unauthenticated"
+
+
+    }
+    const id=claims.id
+    const response = await this.userRepository.profile(id )
+   
+    return {
+        status: 200, // Change the status code based on your use case
+        success: true,
+        data: response,
+      };
+    
+} catch (error) {
+    return {
+        status: 500,
+        success: false,
+        message: "server error"
+
+    }
+}
+   }
 
 
 

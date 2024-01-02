@@ -13,5 +13,9 @@ router.post('/register',(req,res)=>controller.register(req,res))
 router.post('/verify-otp',(req,res)=> controller.verifyOtp(req,res))
 router.post('/login',(req,res)=>controller.login(req,res))
 router.post('/logout',(req,res)=>controller.login(req,res))
+router.get('/resendotp/:userId',(req,res)=>controller.resendotp(req,res))
+router.get('/forgot/:otpemail',(req,res)=>controller.forgot(req,res))
+router.post('/resetpassword',(req,res)=>controller.resetpassword(req,res))
+router.get('/profile',(req,res)=>controller.profile(req,res))
 
 export default router

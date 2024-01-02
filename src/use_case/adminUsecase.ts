@@ -213,13 +213,13 @@ async getUser(id:string){
 }
 
 
-async editUser(isBlocked:boolean,role:string,id:string){
+async editUser(role:string,id:string){
     try {
-       console.log(isBlocked,role,'........usecase.');
+       console.log(role,'........usecase.');
        
        
         
-        const response = await this.adminRepository.editUser(isBlocked,role,id)
+        const response = await this.adminRepository.editUser(role,id)
         if (response.success) {
             console.log('User updated successfully');
             return { success: true, message: 'User updated successfully' };
@@ -232,6 +232,27 @@ async editUser(isBlocked:boolean,role:string,id:string){
         throw new Error('Internal Server Error');
     }
 }
+
+async Bloked(isBlocked:boolean,id:string){
+    try {
+        console.log("use...........");
+        console.log(isBlocked,'fxxxxxxxxxxx');
+        
+        const response = await this.adminRepository.Bloked(isBlocked,id)
+        if (response && response.success) {
+            console.log('User updated successfully');
+            return { success: true, message: 'User updated successfully' };
+        } else {
+            console.log('User not found or not updated');
+            return { success: false, message: 'User not found or not updated' };
+        }
+    } catch (error) {
+        console.error(error);
+        throw new Error('Internal Server Error');
+    }
+    }
 }
+
+
 
 export default Adminusecase

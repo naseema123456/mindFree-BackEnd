@@ -48,18 +48,7 @@ class userController{
         try {
             let { firstName,lastName, email, password, phoneNumber } = req.body
 
-            firstName = firstName.trim();
-            lastName = lastName.trim();
-            email = email.trim();
-            password = password.trim();
-            phoneNumber = phoneNumber.trim();
-
-            if (!firstName ||!lastName || !email || !password || !phoneNumber) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Missing required fields",
-                });
-            }
+          
 
             // Validate email
             if (!this.isValidEmail(email)) {
@@ -166,18 +155,9 @@ class userController{
             let {  email, password } = req.body
 
     
-        
-            email = email.trim();
-            password = password.trim();
+   
+
           
-
-            if ( !email || !password ) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Missing required fields",
-                });
-            }
-
             
             // Validate email
             if (!this.isValidEmail(email)) {
@@ -212,8 +192,7 @@ class userController{
                     })
                 }
     
-        
-    
+                
                 console.log(user.message,"msg")
     
                 res.status(200).json({
@@ -223,7 +202,7 @@ class userController{
                     isVerified:true,
                     token:user?.token
                 });
-    
+              
     
             } catch (error) {
                 console.error(error);
@@ -233,13 +212,158 @@ class userController{
             }
         }
     
-    
-            
+        async resendotp(req: Request, res: Response){
+            try {
+        
+                let id=req.params.userId
+                const existResponse = await this.userRepository.findById(id);
+           
+                if (existResponse && existResponse.success && existResponse.user) {
+               
+        
+                    const Otp = await this.generateOtp.generateOtp(4);
+        
+                    const sendOtp = await this.sendMail.sendMail(existResponse.user.firstName, existResponse.user.email, Otp);
+
+                    if(sendOtp.success){
+                        const response = await this.usercase.resendotp(id, Otp)
+                        
+            if (!response?.success) {
+                return res.status(500).json(response)
+            }
+
+
+            res.status(response.status).json(response)
+        }}
+
+     } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                success: false,
+                message: "server error"
+            })
+        }
+            }
+
+
+            async forgot(req: Request, res: Response){
+                try{
+           
+                const email = req.params.otpemail;
+                const existResponse = await this.userRepository.findByEmail(email);
+                // console.log(existResponse,'hiiiiiiiii');
+                
+                if (!existResponse.success) {
+
+                    return res.status(400).json({
+                        success: false,
+                        message: "This User not exist",
+                    });
+                }else{
+                    const Otp = await this.generateOtp.generateOtp(4);
+
+                    if(existResponse.user){
+                        const firstName = existResponse?.user?.firstName;
+      const id=existResponse?.user?._id
       
-    }
+                        const sendOtp = await this.sendMail.sendMail(firstName, email, Otp)
+                      
+                        
+                        if(sendOtp.success){
+                            const response = await this.usercase.resendotp(id, Otp)
+                        
+                            
+                if (!response?.success) {
+                    return res.status(500).json(response)
+                }
+    
+    
+                res.status(response.status).json(response)
+            }}
+    
+         } }catch (error) {
+                console.error(error);
+                res.status(500).json({
+                    success: false,
+                    message: "server error"
+                })
+            }
+                        
+                    }
+        
+
+                    async resetpassword(req: Request, res: Response){
+                        try {
+                            console.log(req.body);
+                
+
+                            const password=req.body.password
+                            const id=req.body.id
+
+
+              // Validate password
+              if (!this.isValidPassword(password)) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Password must be at least 6 characters long",
+                });
+            }
+
+                            const response = await this.usercase.resetpassword(password,id)
+                            if (response.success) {
+                                res.status(200).json({
+                                  success: true,
+                                  message: 'Password reset successful',
+                                });
+                              } else {
+                                res.status(400).json({
+                                  success: false,
+                                  message: response.message,
+                                });
+                              }
+                        } catch (error) {
+                            console.error(error);
+                            res.status(500).json({
+                                success: false,
+                                message: "server error"
+                            })
+                        }
+                        }
 
 
 
+
+                        async profile(req: Request, res: Response){
+                            try {
+                                console.log("profile");
+                                // console.log(req.headers.authorization);
+                                const token=req.headers.authorization
+                                const response = await this.usercase.profile(token)
+                                // console.log(response.data?.user,"jjjjjjjjjj");
+                                
+                                res.status(response.status).json({
+                                
+                                    data: response.data?.user,
+                                  });
+                                } catch (error) {
+                                  console.error("Error in profile endpoint:");
+                                  res.status(500).json({
+                                    success: false,
+                                    message: "Internal Server Error",
+                                  });
+                                }
+                          
+                          
+                        }
+                    }
+
+
+
+
+
+                
+    
+                
 
 
 export default userController

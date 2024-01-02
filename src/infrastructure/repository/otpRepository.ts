@@ -5,6 +5,8 @@ import {UserModel} from "../../infrastructure/database/userModel"
 
 class OtpRepository {
   async SaveOtp(otp: Otp) {
+  
+    
     try {
       const { id } = otp;
 
@@ -14,6 +16,7 @@ class OtpRepository {
 
       // Save the new OTP
       const response = await new OTP(otp).save();
+
 
       if(response){
         return {
@@ -36,7 +39,7 @@ class OtpRepository {
     }
   }
 
-  async findOtpByidAndCode(id: string, otp: number): Promise<{ success: boolean,message?:string }> {
+  async findOtpByidAndCode(id: string, otp: number): Promise<{ success: boolean,message?:string ,}> {
     let Otp = otp;
     // Check if the OTP with the provided email and code exists in the database
     let userid =id

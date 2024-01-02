@@ -48,7 +48,7 @@ private isValidIsBlocked(isBlocked: boolean): boolean {
 
 // Validation function for role
 private isValidRole(role: string): boolean {
-    const validRoles = ['user', 'admin', 'callProvider'];
+    const validRoles = ['user', 'admin','callprovider'];
     return validRoles.includes(role.toLowerCase());
 }
 
@@ -56,16 +56,7 @@ private isValidRole(role: string): boolean {
         try {
             let {  email, password } = req.body
 
-            email = email.trim();
-            password = password.trim();
-          
-
-            if ( !email || !password ) {
-                return res.status(400).json({
-                    success: false,
-                    message: "Missing required fields",
-                });
-            }
+           
 
             
             // Validate email
@@ -165,19 +156,6 @@ console.log(user,'.......admin controller.....');
                 let { firstName,lastName, email, password, phoneNumber } = req.body
 
 
-                firstName = firstName.trim();
-                lastName = lastName.trim();
-                email = email.trim();
-                password = password.trim();
-                phoneNumber = phoneNumber.trim();
-    
-                if (!firstName ||!lastName || !email || !password || !phoneNumber) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Missing required fields",
-                    });
-                }
-    
                 // Validate email
                 if (!this.isValidEmail(email)) {
                     return res.status(400).json({
@@ -256,17 +234,11 @@ console.log(user,'.......admin controller.....');
                 console.log(req.body);
                 // let {isBlocked, role } = req.body
 
-             const isBlocked=req.body.isBlocked
+          
              const role =req.body.role
              const id=req.body.userId
                 
-                // Validate isBlocked
-                if (!this.isValidIsBlocked(isBlocked)) {
-                    return res.status(400).json({
-                        success: false,
-                        message: "Invalid isBlocked format",
-                    });
-                }
+               
     
                     // Validate role
                     if (!this.isValidRole(role)) {
@@ -276,7 +248,7 @@ console.log(user,'.......admin controller.....');
                         });
                     }
               
-                    const user = await this.admincase.editUser(isBlocked,role,id)
+                    const user = await this.admincase.editUser(role,id)
               
                 
     console.log(user,'.......admin controller.....');
@@ -304,9 +276,46 @@ console.log(user,'.......admin controller.....');
 
 
         }
+
+async Bloked(req: Request, res: Response){
+    try {
+console.log(req.body);
+
+const isBlocked=req.body.isBlocked
+const id=req.body._id
+
+    console.log(isBlocked,id)
+  
+
+        const response = await this.admincase.Bloked(isBlocked ,id)
+    console.log(response,'..........');
+    
+        if (response && response.success) {
+            console.log('User updated successfully');
+            return res.status(200).json({
+                success: true,
+                message: 'User updated successfully',
+            });
+        } else {
+            console.log('User not found or not updated');
+// The update failed
+return res.status(404).json({
+    success: false,
+    message: 'User not found or not updated',
+});
+        }
+    }  catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+        });
+    }
 }
 
 
+
+}
 
 export default adminController
 
