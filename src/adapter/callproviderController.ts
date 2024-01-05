@@ -18,8 +18,12 @@ class callproviderController{
 
     async register(req: Request, res: Response) {
 try {
-
-    const response = await this.callprovidercase.register(req.body)
+    
+    const token=req.headers.authorization
+    console.log(token);
+    console.log(req.body);
+    
+    const response = await this.callprovidercase.register(req.body,token)
     
     if (response.success) {
         return res.status(200).json({
@@ -44,6 +48,61 @@ try {
 }
     }
 
+    async loadTrade(req: Request, res: Response){
+try {
+    
+    const trade = await this.callprovidercase.loadTrade()
+            
+    if (trade.success) {
+        return res.status(200).json({
+          success: true,
+          message: 'trade retrieved successfully',
+          data: trade.data,
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to retrieve trade',
+        });
+      }
+    
+} catch (error) {
+    {
+        console.error('An unexpected error occurred:', error);
+        return res.status(500).json({
+          success: false,
+          message: 'An unexpected error occurred',
+        
+        });
+      }
+}
+    }
+
+
+    async time(req: Request, res: Response){
+console.log(req.body.time);
+try{
+const token=req.headers.authorization
+const response = await this.callprovidercase.time(req.body.time,token)
+if (response.success) {
+    res.status(200).json({
+      success: true,
+      message: response.message,
+    });
+  } else {
+    res.status(400).json({
+      success: false,
+      message: response.message,
+    });
+  }
+} catch (error) {
+console.error(error);
+res.status(500).json({
+    success: false,
+    message: "server error"
+})
+}
+    }
 }
 
 export default callproviderController

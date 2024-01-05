@@ -355,6 +355,41 @@ class userController{
                           
                           
                         }
+
+                        async appoinment (req: Request, res: Response){
+                            try {
+                                console.log("hi");
+                                
+                                console.log(req.params);
+                             const id=req.params.id
+                                const token=req.headers.authorization
+                                console.log(token);
+                                const response = await this.usercase.appoinment(id,token)
+                            } catch (error) {
+                                
+                            }
+                        }
+
+                        async getTime(req: Request, res: Response){
+                            try {
+                                console.log(req.params);
+                                const id=req.params.userId
+                                const response = await this.usercase.getTime(id)
+                                res.status(200).json({
+                                    success: true,
+                                    message: response.message,
+                                    data:response?.data,
+                                  
+                                });
+                              
+                    
+                            } catch (error) {
+                                console.error(error);
+                                res.status(500).json({
+                                    success: 'false', message: 'error occured try again'
+                                })
+                            }
+                        }
                     }
 
 

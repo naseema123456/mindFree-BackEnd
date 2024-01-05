@@ -1,7 +1,9 @@
 import User from '../../domain/user'
 import mongoose, { ObjectId } from "mongoose";
+
 import { UserModel } from '../database/userModel'
 // import UserRepository from '../../use_case/interface/userController'
+import { AppointmentModel } from '../database/appoinment';
 
 class UserRepository implements UserRepository{
     async create(user: User){
@@ -124,7 +126,33 @@ class UserRepository implements UserRepository{
             return { success: false, message: 'Internal server error' };
         }
     }
+    async appoinment(id:string,callProvider:string){
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
 
+    async getTime(id:string|undefined){
+        try {
+            const objectId = new mongoose.Types.ObjectId(id);
+            const userData = await AppointmentModel.find({ callprovider:objectId })
+            console.log(userData);
+            
+            return {
+                success: true,
+                message: "getTime",
+                data:userData
+
+            }
+        } catch (error) {
+            return {
+                 success : false,
+                 message: "database error"
+            }
+    }
+    }
     }
 
 export default UserRepository

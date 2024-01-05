@@ -7,6 +7,7 @@ import Otp from "../domain/otp";
 import mongoose, { Types } from "mongoose";
 import { errorMonitor } from "nodemailer/lib/xoauth2";
 import { UserModel } from "../infrastructure/database/userModel";
+import { response } from "express";
 
 
 class Userusecase{
@@ -329,7 +330,64 @@ try {
 }
    }
 
+async appoinment(callProvider:string,token:string|undefined){
+    try {
+     
+        const claims = this.jwtToken.verifyJWT(token)
 
+    
+        if(!claims) return {
+            status: 401,
+            success: false,
+            message: "Unauthenticated"
+    
+    
+        }
+        const id=claims.id
+    //   const approve={
+    //     userId:claims.id,
+    //     callProvider:callProvider,
+    //     date:new Date(), 
+    //     time:
+
+
+    //   }
+        const response = await this.userRepository.appoinment(id,callProvider )
+
+    } catch (error) {
+        
+    }
+}
+
+async getTime(id:string|undefined){
+    try {
+        const response = await this.userRepository.getTime(id)
+        if(response){
+            return {
+                status: 200,
+                data: response.data,
+                success: true,
+                message: response.message,
+            }
+    
+        }else {
+        // User or password not found
+        return {
+            status: 401,
+            success: false,
+            message: "Invalid credentials",
+
+        };
+    }
+
+} catch (error) {
+return {
+    status: 500,
+    success: false,
+    message: "Internal server error. Please try again later.",
+}
+}
+}
 
 }
 

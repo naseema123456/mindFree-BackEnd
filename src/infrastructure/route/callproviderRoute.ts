@@ -9,8 +9,8 @@ const controller = new callproviderController(useCase)
 
 const router = express.Router()
 
-router.post('/register',(req,res)=>controller.register(req,res))
-
-
+router.post('/trade',(req,res)=>controller.register(req,res))
+router.get('/loadTrade',(req,res)=>controller.loadTrade(req,res))
+router.post('/save-time-slot',(req,res)=>controller.time(req,res))
 
 export default router

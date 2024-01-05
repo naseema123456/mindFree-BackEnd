@@ -1,21 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
+import TradingRecord from "../../domain/trade";
 
-interface TradingRecord extends Document {
-  id?: string;
-  date?: Date;
-  profitLoss?: number;
-  stockName: string;
-  tradeType: string;
-  exitPrice?: number;
-  atThePrice: number;
-  quantity: number;
-  target: number;
-  stopLoss: number;
-  percentage?: number;
-  usedCapital?: number;
-  userId?: string;
-  more: string;
-}
+
 
 const tradingRecordSchema: Schema<TradingRecord> = new mongoose.Schema({
   date: Date,
@@ -29,7 +15,10 @@ const tradingRecordSchema: Schema<TradingRecord> = new mongoose.Schema({
   stopLoss: Number,
   percentage: Number,
   usedCapital: Number,
-  userId: String,
+  userId:{
+    type:mongoose.Types.ObjectId,
+    ref:'user'
+  },
   more: String,
 });
 
