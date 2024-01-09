@@ -5,12 +5,12 @@ import Appointment from "../../domain/appoinment";
 const appointmentSchema: Schema<Appointment> = new mongoose.Schema({
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
   
     },
     callprovider: {
       type: Schema.Types.ObjectId,
-      ref: 'CallProvider',
+      ref: 'user',
       required: true,
     },
     date: {
@@ -29,6 +29,10 @@ const appointmentSchema: Schema<Appointment> = new mongoose.Schema({
     },
     isBlocked: {
       type: Boolean,
+      required: true,
+    },
+    amount: {
+      type: Number,
       required: true,
     },
   });

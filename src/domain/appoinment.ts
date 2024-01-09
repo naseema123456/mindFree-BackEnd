@@ -6,6 +6,7 @@ interface Appointment  {
   date?: Date;
   time: string;
   status: string;
+  amount:number;
   isBlocked: boolean;
 }
 

@@ -80,7 +80,72 @@ return {
      message: "database error"
 }
 }
-      }}
+      }
+    
+    
+    
+    async getappoinment(){
+      try {
+        const Appoinment = await AppointmentModel.find()
+        if (Appoinment && Appoinment.length > 0) {
+       
+          return {
+            success: true,
+            message: 'Appoinment found',
+            data: Appoinment, // Optionally return the users data if needed
+          };
+        } else {
+          console.log('Appoinment not found');
+          return {
+            success: false,
+            message: 'No Appoinment found',
+          };
+        }
+
+
+      } catch (error) {
+        return {
+          success: false,
+          message: "database error",
+        };
+  }
+
+}
+
+async getcallprovider(){
+  try {
+    const appointments = await AppointmentModel.find().populate({
+      path: 'callprovider',
+      select: 'firstName lastName',
+    });
+    
+    // Use a Set to keep track of unique callprovider IDs
+    const uniqueCallProviders = new Set();
+    
+    // Filter out duplicates and create an array of distinct callproviders
+    const distinctTradeProviders = appointments.filter(appointment => {
+      const callproviderId = appointment.callprovider.toString();
+      if (!uniqueCallProviders.has(callproviderId)) {
+        uniqueCallProviders.add(callproviderId);
+        return true;
+      }
+      return false;
+    });
+    
+   
+    return distinctTradeProviders
+    
+
+  } catch (error) {
+    return {
+      success: false,
+      message: "database error",
+    };
+  }
+
+}
+    
+    }
 
 
 export default callproviderRepository

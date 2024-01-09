@@ -4,6 +4,7 @@ import mongoose, { ObjectId } from "mongoose";
 import { UserModel } from '../database/userModel'
 // import UserRepository from '../../use_case/interface/userController'
 import { AppointmentModel } from '../database/appoinment';
+import Appointment from '../../domain/appoinment';
 
 class UserRepository implements UserRepository{
     async create(user: User){
@@ -126,11 +127,43 @@ class UserRepository implements UserRepository{
             return { success: false, message: 'Internal server error' };
         }
     }
-    async appoinment(id:string,callProvider:string){
+    async appoinment(callProvider:string,id:string,time:string,date:Date){
         try {
+            console.log(callProvider);
             
+            const result = await AppointmentModel.updateOne(
+                { callprovider: callProvider, time: time },
+                { $set: { userId: id, time: time, date: date } }
+              );
+              
+              console.log(result);
+              
+              if (result.modifiedCount === 1) {
+                // Document was successfully updated
+                const updatedAppointment = await AppointmentModel.findOne({
+                  callprovider: callProvider,
+                  time: time
+                });
+              
+                console.log(updatedAppointment);
+                return{
+                    success: true,
+          Message:"succfully updates appointment",
+                    data:updatedAppointment
+                }
+              } else {
+                // Document was not updated (maybe it didn't match the conditions)
+                console.log('Document not updated');
+                return{
+                    success: false,
+          Message:'Document not updated',
+             
+                }
+              }
+              
+              
         } catch (error) {
-            
+            return { success: false, message: 'Internal server error' };
         }
     }
 

@@ -330,7 +330,7 @@ try {
 }
    }
 
-async appoinment(callProvider:string,token:string|undefined){
+async appoinment(callProvider:string,token:string|undefined,time:string){
     try {
      
         const claims = this.jwtToken.verifyJWT(token)
@@ -344,18 +344,24 @@ async appoinment(callProvider:string,token:string|undefined){
     
         }
         const id=claims.id
-    //   const approve={
-    //     userId:claims.id,
-    //     callProvider:callProvider,
-    //     date:new Date(), 
-    //     time:
-
-
-    //   }
-        const response = await this.userRepository.appoinment(id,callProvider )
-
+     
+        const date = new Date();
+      
+        const response = await this.userRepository.appoinment(callProvider,id,time,date )
+        if (response.success) {
+            return {
+                status: 200, // Change the status code based on your use case
+                success: true,
+                data: response,
+              };
+          }
     } catch (error) {
-        
+          return {
+        status: 500,
+        success: false,
+        message: "server error"
+
+    }
     }
 }
 

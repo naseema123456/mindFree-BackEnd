@@ -1,6 +1,8 @@
 import { Request,Response } from "express";
 import callproviderUsecase from "../use_case/callproviderUsecase";
 import callproviderRepository from "../infrastructure/repository/callproviderRepository";
+import { UserModel } from "../infrastructure/database/userModel";
+import { AppointmentModel } from "../infrastructure/database/appoinment";
 
 
 class callproviderController{
@@ -84,6 +86,8 @@ console.log(req.body.time);
 try{
 const token=req.headers.authorization
 const response = await this.callprovidercase.time(req.body.time,token)
+console.log(response,"response time,controller");
+
 if (response.success) {
     res.status(200).json({
       success: true,
@@ -103,6 +107,64 @@ res.status(500).json({
 })
 }
     }
+
+    async getappoinment(req: Request, res: Response){
+      try {
+        console.log("getappoinment");
+        
+        const response = await this.callprovidercase.getappoinment()
+        console.log(response,"response in getappoinment controller");
+        if (response) {
+          return res.status(200).json({
+            success: true,
+            message: 'Appoinment retrieved successfully',
+            data: response.data,
+          });
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: 'Failed to retrieve appoinment',
+          });
+        }
+      
+  } catch (error) {
+      {
+          console.error('An unexpected error occurred:', error);
+          return res.status(500).json({
+            success: false,
+            message: 'An unexpected error occurred',
+          
+          });
+        }
+  }
+}
+async getcallprovider(req: Request, res: Response){
+  try {
+    console.log("hiiii");
+    const response = await this.callprovidercase.getcallprovider()
+    console.log(response, "getcallprovider");
+    
+    if(response){
+      // Return response
+      return res.json({
+        Message: "got it",
+        success: true,
+        data: response
+      });
+    }
+
+  } catch (error) {
+    console.error('An unexpected error occurred:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred'
+    });
+  }
+}
+
+
+
+
 }
 
 export default callproviderController

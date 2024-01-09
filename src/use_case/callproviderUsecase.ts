@@ -121,23 +121,14 @@ async time(time:string,token:string|undefined){
 
     }
     const id=claims.id
-  //   const NewUser: User = {
-  //     firstName: user.firstName,
-  //     lastName: user.lastName,
-  //     email: user.email,
-   
-  //     password: newPassword,
-  //     phoneNumber: user.phoneNumber,
-  //     role: 'user', 
-  //     isBlocked: false, 
-  //     isVerified: false, 
-      
-  //  }
+
     const newAppoinment:Appointment={
       callprovider:id,
       time:time,
       status:"pending",
-      isBlocked:false
+      isBlocked:false,
+      amount:1000,
+      
     }
     const response = await this.callproviderRepository.time(newAppoinment)
     if (response?.success) {
@@ -169,6 +160,29 @@ async time(time:string,token:string|undefined){
 
   }
 }
+async getappoinment(){
+  try {
+    const response = await this.callproviderRepository.getappoinment()
+    if(response.success){
+      return response
+    }
+   
+  } catch (error) {
+    throw error;
+  }
+}
 
+
+async getcallprovider(){
+  try {
+    const response = await this.callproviderRepository.getcallprovider()
+    console.log(response,"getcallprovider");
+    
+    return response
+  } catch (error) {
+    throw error;
+  }
+
+}
 }
 export default callproviderUsecase

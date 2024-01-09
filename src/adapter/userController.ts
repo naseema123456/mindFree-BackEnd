@@ -362,12 +362,26 @@ class userController{
                                 
                                 console.log(req.params);
                              const id=req.params.id
+                             const time=req.params.time
                                 const token=req.headers.authorization
                                 console.log(token);
-                                const response = await this.usercase.appoinment(id,token)
-                            } catch (error) {
-                                
-                            }
+                                const response = await this.usercase.appoinment(id,token,time)
+                                if (response) {
+                                 
+                                    const updatedAppointment = response.data; 
+                              
+                                    // Now you can send the updated appointment as a response
+                                    res.status(200).json(updatedAppointment);
+                                  } else {
+                                    // Handle the case where there was an error
+                                    res.status(500).json({ error: response});
+                                  }
+                                } catch (error) {
+                                  // Handle unexpected errors
+                                  console.error('Unexpected error:', error);
+                                  res.status(500).json({ error: 'Internal Server Error' });
+                                }
+                              
                         }
 
                         async getTime(req: Request, res: Response){

@@ -17,7 +17,7 @@ router.get('/resendotp/:userId',(req,res)=>controller.resendotp(req,res))
 router.get('/forgot/:otpemail',(req,res)=>controller.forgot(req,res))
 router.post('/resetpassword',(req,res)=>controller.resetpassword(req,res))
 router.get('/profile',(req,res)=>controller.profile(req,res))
-router.get('/appointment/:id',(req,res)=>controller.appoinment(req,res))
+router.get('/appointment/:id/:time',(req,res)=>controller.appoinment(req,res))
 router.get('/getTime/:userId',(req,res)=>controller.getTime(req,res))
 
 export default router
