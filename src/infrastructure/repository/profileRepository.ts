@@ -15,7 +15,7 @@ async upload(id:string,file:string|undefined){
                 }
             }
         );
-        console.log(updateImg);
+        // console.log(updateImg);
        
             if (updateImg.modifiedCount === 1) {
                 console.log('User image updated successfully');
@@ -33,7 +33,7 @@ async upload(id:string,file:string|undefined){
 
         async update(user:User){
           try {
-            console.log(user,"repo");
+            // console.log(user,"repo");
             
             const updatedUser = await UserModel.findByIdAndUpdate(
               user.id,
@@ -57,11 +57,11 @@ async upload(id:string,file:string|undefined){
               { new: true } // Return the updated document
             );
           
-            console.log(updatedUser, "Updated User");
+            // console.log(updatedUser, "Updated User");
             // console.log(reset);
             
             if (updatedUser) {
-              console.log(updatedUser, "Updated User");
+              // console.log(updatedUser, "Updated User");
               return { success: true, message:  "Updated User" };
             } else {
               console.log("User not found for update");

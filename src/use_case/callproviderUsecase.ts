@@ -160,9 +160,11 @@ async time(time:string,token:string|undefined){
 
   }
 }
-async getappoinment(){
+async getappoinment(token:string|undefined){
   try {
-    const response = await this.callproviderRepository.getappoinment()
+    const claims = this.jwtToken.verifyJWT(token)
+    const id=claims.id
+    const response = await this.callproviderRepository.getappoinment(id)
     if(response.success){
       return response
     }
@@ -176,7 +178,7 @@ async getappoinment(){
 async getcallprovider(){
   try {
     const response = await this.callproviderRepository.getcallprovider()
-    console.log(response,"getcallprovider");
+    // console.log(response,"getcallprovider");
     
     return response
   } catch (error) {
@@ -184,5 +186,20 @@ async getcallprovider(){
   }
 
 }
+
+async getAllappoinment(token:string|undefined){
+  try {
+    const claims = this.jwtToken.verifyJWT(token)
+    const id=claims.id
+    const response = await this.callproviderRepository.getAllappoinment(id)
+    // console.log(response,"getcallprovider");
+    
+    return response
+  } catch (error) {
+    throw error;
+  }
+
+}
+
 }
 export default callproviderUsecase

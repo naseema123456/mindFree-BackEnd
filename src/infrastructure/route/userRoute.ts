@@ -19,5 +19,6 @@ router.post('/resetpassword',(req,res)=>controller.resetpassword(req,res))
 router.get('/profile',(req,res)=>controller.profile(req,res))
 router.get('/appointment/:id/:time',(req,res)=>controller.appoinment(req,res))
 router.get('/getTime/:userId',(req,res)=>controller.getTime(req,res))
+router.get('/gethistory/:userId/:receiverId',(req,res)=>controller.gethistory(req,res))
 
 export default router

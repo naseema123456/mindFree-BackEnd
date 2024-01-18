@@ -14,6 +14,7 @@ router.get('/loadTrade',(req,res)=>controller.loadTrade(req,res))
 router.post('/save-time-slot',(req,res)=>controller.time(req,res))
 router.get('/getappoinment',(req,res)=>controller.getappoinment(req,res))
 router.get('/getcallprovider',(req,res)=>controller.getcallprovider(req,res))
+router.get('/getAllappoinment',(req,res)=>controller.getAllappoinment(req,res))
 
 
 export default router

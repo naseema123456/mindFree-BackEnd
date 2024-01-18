@@ -20,7 +20,7 @@ class profileController{
     async upload(req: Request, res: Response){
         console.log('upload controller');
         try {
-            console.log( req.file?.filename);
+            // console.log( req.file?.filename);
             const file= req.file?.filename
             const token=req.headers.authorization
           
@@ -54,7 +54,7 @@ class profileController{
     async update(req: Request, res: Response){
 try {
     
-    console.log(req.body,".........");
+    // console.log(req.body,".........");
   
     const response = await this.profilecase.update(req.body)
     if (response.success) {

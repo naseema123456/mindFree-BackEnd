@@ -10,7 +10,15 @@ interface User {
     role: string,
     isBlocked: boolean,
     isVerified: boolean,
+    wallet?:{
+        balance:number,
+        transactions:[
+            date:Date,
+            Description:string,
+            amount:number
 
+        ]
+    },
     address?: {
         name: String,
         house: String,

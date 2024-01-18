@@ -3,12 +3,13 @@ import userRouter from '../route/userRoute';
 import adminRouter from '../route/adminRoute';
 import profileRouter from '../route/profileRoute';
 import callprovider from '../route/callproviderRoute';
-
+// import {SocketServer} from '../../socket/socket.io'
 import path from 'path';
 const cors = require('cors')
 export const createServer = () => {
     try {
         const app = express()
+ 
         
         app.use(cors({
             credentials:true,
@@ -25,7 +26,8 @@ export const createServer = () => {
           app.use('/profile', profileRouter)
           app.use('/callprovider', callprovider)
 
-
+        //   const server = require('http').Server(app); 
+        //   SocketServer(server)
         return app
     }
     catch (error) {

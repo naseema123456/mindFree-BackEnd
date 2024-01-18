@@ -11,6 +11,15 @@ interface User extends Document {
     role: string,
     isBlocked: boolean,
     isVerified: boolean,
+    wallet:{
+        balance:number,
+        transactions:[
+            date:Date,
+            Description:string,
+            amount:number
+
+        ]
+    },
     address: {
         streetAddress: string,
         landmark: string,
@@ -60,6 +69,31 @@ const userSchema: Schema<User> = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
+    },
+     wallet: {
+        balance: {
+            type: Number,
+            default: 0,
+        },
+        transactions: [{
+            date: {
+                type: Date,
+                default: Date.now(),
+            },
+            type: {
+                type: String,
+               
+            },
+            Description: {
+                type: String,
+                default: "credit"
+            },
+            amount: {
+                type: Number,
+            },
+
+
+        }],
     },
   
     address: {

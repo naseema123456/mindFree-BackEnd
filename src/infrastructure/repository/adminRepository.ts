@@ -61,7 +61,7 @@ class AdminRepository implements AdminRepository{
 
             async create(user: User){
               try {
-                  console.log(user,"user");
+                  // console.log(user,"user");
                   
                   const response = await new UserModel(user).save();
                   await  response.updateOne({ $unset: { timeTolive: 1 } });
@@ -88,7 +88,7 @@ const userData = await UserModel.findById({ _id:id});
 
 if (userData) {
   // User found, you can do something with the data
-  console.log(userData, 'repository...........');
+  // console.log(userData, 'repository...........');
   return userData; // Or do something else with the data
 } else {
   // User not found
@@ -104,9 +104,9 @@ if (userData) {
 
 async editUser(role:string,id:string){
   try {
-    console.log(role,'repository.................');
+    // console.log(role,'repository.................');
     const editData = await UserModel.updateOne({ _id: id }, { $set: {  role } });
-    console.log(editData);
+    // console.log(editData);
     
     if (editData.  modifiedCount === 1) {
       // Successfully updated one document
@@ -127,11 +127,11 @@ async editUser(role:string,id:string){
 
 async Bloked(isBlocked:boolean,id:string){
   try {
-    console.log("repo...........");
+    // console.log("repo...........");
     if(isBlocked===true){
 
       let Blocked = await UserModel.updateOne({ _id: id }, { $set: { isBlocked :false} });
-      console.log(Blocked);
+      // console.log(Blocked);
       if (Blocked.  modifiedCount === 1) {
         // Successfully updated one document
         console.log('User unblocked successfully');

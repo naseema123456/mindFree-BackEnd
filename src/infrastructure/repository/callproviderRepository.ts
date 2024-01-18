@@ -3,12 +3,13 @@ import { TradingRecordModel } from "../database/trade";
 import { UserModel } from '../database/userModel';
 import { AppointmentModel } from "../database/appoinment";
 import Appointment from "../../domain/appoinment";
+import { ObjectId } from 'mongodb';
 class callproviderRepository{
 
 
     async register(trade:TradingRecord){
         try {
-            console.log(trade,"trade");
+            // console.log(trade,"trade");
             
             const response = await new TradingRecordModel(trade).save();
           
@@ -36,7 +37,7 @@ class callproviderRepository{
             });
             
         
-            console.log(Trade);
+            // console.log(Trade);
           
             
             if (Trade && Trade.length > 0) {
@@ -84,9 +85,9 @@ return {
     
     
     
-    async getappoinment(){
+    async getappoinment(id:string|undefined){
       try {
-        const Appoinment = await AppointmentModel.find()
+        const Appoinment = await AppointmentModel.find({callprovider:id})
         if (Appoinment && Appoinment.length > 0) {
        
           return {
@@ -144,6 +145,63 @@ async getcallprovider(){
   }
 
 }
+
+
+async getAllappoinment(id: string | undefined) {
+  try {
+    const Appoinment = await AppointmentModel.find({
+      $or: [
+        { callprovider: id },
+        { userId: id },
+      ],
+    });
+    // console.log(Appoinment, "aaaaaaaaaaaa");
+
+    let appointments; // Declare the variable outside of the if blocks
+
+    if (Appoinment) {
+      const idToCheck = new ObjectId(id).toString();
+      const isMatchingId = Appoinment.some((item) => {
+        const callproviderId = item.callprovider?.toString(); // Convert ObjectId to string
+        return callproviderId === idToCheck;
+      });
+
+      if (isMatchingId) {
+        appointments = await AppointmentModel.find({ callprovider: idToCheck }).populate({
+          path: 'userId',
+          select: 'firstName lastName',
+        });
+      } else {
+        appointments = await AppointmentModel.find({ userId: idToCheck }).populate({
+          path: 'callprovider',
+          select: 'firstName lastName',
+        });
+        // console.log(appointments, "appointments");
+      }
+    }
+
+    if (Appoinment && appointments && appointments.length > 0) {
+      return {
+        success: true,
+        message: 'Appoinment found',
+        data: appointments
+      };
+    } else {
+      console.log('Appoinment not found');
+      return {
+        success: false,
+        message: 'No Appoinment found',
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Error fetching appointments',
+    };
+  }
+}
+
     
     }
 

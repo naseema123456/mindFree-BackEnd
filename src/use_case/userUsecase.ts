@@ -8,6 +8,7 @@ import mongoose, { Types } from "mongoose";
 import { errorMonitor } from "nodemailer/lib/xoauth2";
 import { UserModel } from "../infrastructure/database/userModel";
 import { response } from "express";
+import ChatModel, { Chat } from "../infrastructure/database/chat";
 
 
 class Userusecase{
@@ -137,6 +138,7 @@ console.log(otp,id,'............');
             
             
             const response = await this.userRepository.findByEmail(email)
+           
             
             if (response.success) {
                 const storedUser = response.user;
@@ -393,6 +395,65 @@ return {
     message: "Internal server error. Please try again later.",
 }
 }
+}
+
+ async sendMessage(data: any): Promise<any> {
+    // Your implementation here
+    console.log(data);
+
+    try {
+        console.log("Inside send message");
+        const senderId = data.sender;
+        const receiverId = data.receiver;
+        const message=data.messages
+      
+        // Find the chat conversation where both senderId and receiverId are members
+        const existingChat = await ChatModel.findOne({
+          member: {
+            $all: [senderId, receiverId],
+          },
+        });
+      
+        if (existingChat) {
+          // If the conversation exists, push the new message
+          existingChat.messages.push({
+            text: data.messages,
+            sender: senderId,
+          });
+      
+          // Save the updated conversation
+          await existingChat.save();
+        } else {
+          // If the conversation doesn't exist, create a new one
+          const newChat = new ChatModel({
+            member: [senderId, receiverId],
+            messages: [
+              {
+                text: data.messages,
+                sender: senderId,
+              },
+            ],
+          });
+      
+          // Save the new conversation
+          await newChat.save();
+        }
+      
+        
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+};
+
+async gethistory(userId:string,receiverId:string) {
+try {
+    const response = await this.userRepository.gethistory(userId,receiverId)
+    return response
+} catch (error) {
+    console.error('Error fetching chat history:', error);
+    throw error;
+}
+
 }
 
 }

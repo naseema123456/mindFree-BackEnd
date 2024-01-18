@@ -1,4 +1,4 @@
-import { Request,Response } from "express";
+import { Request,Response, response } from "express";
 import callproviderUsecase from "../use_case/callproviderUsecase";
 import callproviderRepository from "../infrastructure/repository/callproviderRepository";
 import { UserModel } from "../infrastructure/database/userModel";
@@ -22,8 +22,8 @@ class callproviderController{
 try {
     
     const token=req.headers.authorization
-    console.log(token);
-    console.log(req.body);
+    // console.log(token);
+    // console.log(req.body);
     
     const response = await this.callprovidercase.register(req.body,token)
     
@@ -82,11 +82,11 @@ try {
 
 
     async time(req: Request, res: Response){
-console.log(req.body.time);
+// console.log(req.body.time);
 try{
 const token=req.headers.authorization
 const response = await this.callprovidercase.time(req.body.time,token)
-console.log(response,"response time,controller");
+// console.log(response,"response time,controller");
 
 if (response.success) {
     res.status(200).json({
@@ -110,10 +110,10 @@ res.status(500).json({
 
     async getappoinment(req: Request, res: Response){
       try {
-        console.log("getappoinment");
-        
-        const response = await this.callprovidercase.getappoinment()
-        console.log(response,"response in getappoinment controller");
+        // console.log("getappoinment");
+        const token=req.headers.authorization    
+        const response = await this.callprovidercase.getappoinment(token)
+        // console.log(response,"response in getappoinment controller");
         if (response) {
           return res.status(200).json({
             success: true,
@@ -140,9 +140,9 @@ res.status(500).json({
 }
 async getcallprovider(req: Request, res: Response){
   try {
-    console.log("hiiii");
+    // console.log("hiiii");
     const response = await this.callprovidercase.getcallprovider()
-    console.log(response, "getcallprovider");
+    // console.log(response, "getcallprovider");
     
     if(response){
       // Return response
@@ -162,9 +162,38 @@ async getcallprovider(req: Request, res: Response){
   }
 }
 
+async getAllappoinment(req: Request, res: Response){
+  const token=req.headers.authorization  
+  const response = await this.callprovidercase.getAllappoinment(token)
+  // console.log(response,"res");
+  
+  if (response) {
+    return res.status(200).json({
+      success: true,
+      message: 'Appoinment retrieved successfully',
+      data: response.data,
+    });
+  } else {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve appoinment',
+    });
+  }
 
-
+} catch (error:Error) {
+{
+    console.error('An unexpected error occurred:', error);
+    return response.status(500).json({
+      success: false,
+      message: 'An unexpected error occurred',
+    
+    });
+  }
+}
 
 }
+
+
+
 
 export default callproviderController
