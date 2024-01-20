@@ -313,9 +313,25 @@ return res.status(404).json({
     }
 }
 
-
-
+async getMarket(req: Request, res: Response){
+    try {
+        const market = await this.admincase.getMarket()
+        return res.status(200).json({
+            success: true,
+            message: 'Users retrieved successfully',
+            data: market,
+          });
+    } catch (error) {
+           console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+        });
+    }
+    }
 }
+
+
 
 export default adminController
 

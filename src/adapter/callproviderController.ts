@@ -191,6 +191,27 @@ async getAllappoinment(req: Request, res: Response){
   }
 }
 
+async getTrade(req: Request, res: Response){
+try {
+  const token=req.headers.authorization  
+  const response = await this.callprovidercase.getTrade(token)
+  return res.status(200).json({
+    success: true,
+    message: 'All trade retrieved successfully',
+    data: response,
+  });
+  
+} catch (error) {
+  console.error('An unexpected error occurred:', error);
+  return response.status(500).json({
+    success: false,
+    message: 'An unexpected error occurred',
+  
+  });
+}
+  
+}
+
 }
 
 

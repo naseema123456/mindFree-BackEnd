@@ -423,6 +423,7 @@ return {
       
           // Save the updated conversation
           await existingChat.save();
+          return existingChat
         } else {
           // If the conversation doesn't exist, create a new one
           const newChat = new ChatModel({
@@ -437,9 +438,9 @@ return {
       
           // Save the new conversation
           await newChat.save();
+          return newChat
         }
       
-        
       } catch (error) {
         console.error("Error sending message:", error);
       }

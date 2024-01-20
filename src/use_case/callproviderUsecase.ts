@@ -201,5 +201,16 @@ async getAllappoinment(token:string|undefined){
 
 }
 
+async getTrade(token:string|undefined){
+  try {
+    const claims = this.jwtToken.verifyJWT(token)
+    const id=claims.id
+    const response = await this.callproviderRepository.getTrade(id)
+    return response
+  } catch (error) {
+    throw error;
+  }
+}
+
 }
 export default callproviderUsecase

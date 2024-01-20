@@ -1,6 +1,8 @@
 import User from '../../domain/user'
-import mongoose, { ObjectId } from "mongoose";
+// import mongoose, { ObjectId } from "mongoose";
 import { UserModel } from '../database/userModel'
+import { AppointmentModel } from "../database/appoinment";
+
 
 class AdminRepository implements AdminRepository{
 
@@ -159,6 +161,25 @@ async Bloked(isBlocked:boolean,id:string){
 
   } catch (error) {
     
+  }
+}
+
+
+async getMarket(){
+  try {
+    // const appointmentsWithUserId = await AppointmentModel.find({ userId: { $exists: true, $ne: null } });
+    const appointmentsWithUserId = await AppointmentModel.find({ userId: { $exists: true, $ne: null } })
+  .populate({
+     path: 'callprovider',
+  select: 'firstName lastName'} )
+  .exec();
+
+
+ 
+    return appointmentsWithUserId
+    
+  } catch (error) {
+    return { success: false, message: 'Internal Server Error' };
   }
 }
       }

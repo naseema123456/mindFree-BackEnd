@@ -16,6 +16,7 @@ router.post('/addUser',(req,res)=>controller.addUser(req,res))
 router.get('/getUser/:user_id',(req,res)=>controller.getUser(req,res))
 router.post('/editUser',(req,res)=>controller.editUser(req,res))
 router.post('/Blocked',(req,res)=>controller.Bloked(req,res))
+router.get('/getMarket',(req,res)=>controller.getMarket(req,res))
 
 
 export default router

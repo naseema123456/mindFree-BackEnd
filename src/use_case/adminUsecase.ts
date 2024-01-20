@@ -251,6 +251,17 @@ async Bloked(isBlocked:boolean,id:string){
         throw new Error('Internal Server Error');
     }
     }
+
+async getMarket(){
+    try {
+        const market = await this.adminRepository.getMarket()
+        return market
+    } catch (error) {
+        console.error(error);
+        throw new Error('Internal Server Error');
+    }
+}
+
 }
 
 

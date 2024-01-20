@@ -33,20 +33,33 @@ const startServer = async () => {
 
             console.log('user connected');
             const id = socket.handshake.query.id as string
-         console.log(id,"id");
+            console.log(id,"id");
+            userSockets.set(id, socket.id);
          
             log(socket.id, 'socket id')
 
-            socket.on('chatMessage', async (chatData:Chat) => {
-            userSockets.set(id, socket.id);
-       console.log(chatData.receiver);
-       
-                const savedData = await userUseCase.sendMessage(chatData)
+         
+
+            socket.on('chatMessage', async (chatData: Chat) => {
+                console.log(chatData.receiver);
+                // console.log(userSockets,"set use")
+            //   
+                const savedData = await userUseCase.sendMessage(chatData);
+              
+          console.log(savedData,"savedData");
+          
+              
+                const receiverSocketId = userSockets.get(chatData.receiver) as string;
         
-            
-                socket.to(userSockets.get(chatData.receiver) as string).emit('recieve-message', savedData);
-    
-            });
+                if (receiverSocketId) {
+                  // Emit to the specific socket ID of the receiver
+                  io.to(receiverSocketId).emit('recieve-message', savedData);
+                } else {
+                  // Handle the case where the receiver's socket ID is not found
+                  console.error(`Socket ID not found for receiver: ${chatData.receiver}`);
+                }
+              });
+              
 
 
             socket.on('disconnect', () => {

@@ -202,6 +202,25 @@ async getAllappoinment(id: string | undefined) {
   }
 }
 
+
+async getTrade(id:string|undefined){
+  try {
+    const trade = await TradingRecordModel.find({
+      userId: {
+        $eq: id
+      }
+    });
+    console.log(trade,"trade");
+    return trade
+    
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: 'Error fetching appointments',
+    };
+  }
+}
     
     }
 
