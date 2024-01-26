@@ -329,6 +329,22 @@ async getMarket(req: Request, res: Response){
         });
     }
     }
+    async getMessages(req: Request, res: Response){
+        try {
+            const message = await this.admincase.getMessages()
+            return res.status(200).json({
+                success: true,
+                message: 'Users retrieved successfully',
+                data: message,
+              });
+        } catch (error) {
+               console.error(error);
+            return res.status(500).json({
+                success: false,
+                message: 'Internal Server Error',
+            });
+        }
+        }
 }
 
 

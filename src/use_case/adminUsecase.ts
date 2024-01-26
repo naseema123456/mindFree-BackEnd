@@ -262,6 +262,15 @@ async getMarket(){
     }
 }
 
+async getMessages(){
+    try {
+        const message = await this.adminRepository.getMessages()
+        return message
+    } catch (error) {
+        console.error(error);
+        throw new Error('Internal Server Error');
+    }
+}
 }
 
 

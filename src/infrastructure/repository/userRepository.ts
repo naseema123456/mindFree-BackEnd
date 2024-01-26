@@ -5,6 +5,8 @@ import { UserModel } from '../database/userModel'
 // import UserRepository from '../../use_case/interface/userController'
 import { AppointmentModel } from '../database/appoinment';
 import Appointment from '../../domain/appoinment';
+import { IApimsg } from '../database/notification';
+import { NotificationModel } from '../database/notification';
 
 class UserRepository implements UserRepository{
     async create(user: User){
@@ -197,7 +199,7 @@ try {
     //         {  receiverId}
     //     ]
     // });
-    
+
     const chats = await ChatModel.find({
         member: {
             $all: [userId, receiverId]
@@ -228,6 +230,85 @@ try {
     throw error;
 }
     }
-    }
 
+    async getvideo(id: string, time: string) {
+        try {
+          const getTimeArray = await AppointmentModel.find({
+            $or: [
+              { $and: [{ userId: id }, { time: time }] },
+              { $and: [{ callprovider: id }, { time: time }] }
+            ]
+          });
+      
+        //   for (const getTime of getTimeArray) {
+        //     const userId = getTime.userId?.toString();
+        //     const callprovider = getTime.callprovider?.toString();
+      
+        //     if (userId == id) {
+        //       console.log(getTime.callprovider, "get callprovider");
+        //       return getTime.callprovider;
+        //     }
+      
+        //     if (callprovider == id) {
+        //       console.log(getTime.userId, "get userId");
+        //       return getTime.userId;
+        //     }
+        //   }
+        const recId=getTimeArray[0]._id.toHexString()
+        console.log(recId,"getTimeArray");
+        
+      return recId
+          // Handle the case when none of the conditions are met.
+        } catch (error) {
+          // Handle errors appropriately
+          console.error(error);
+        }
+      }
+      async video(id:string|undefined){
+        try {
+            const response = await AppointmentModel.find({_id:id})
+            console.log(response,"resp");
+            return response
+        } catch (error) {
+            console.error(error);
+        }
+      }
+      async contact(NewAppointment:IApimsg){
+        try {
+            const response = await new NotificationModel(NewAppointment).save();
+            console.log(response,"resp");
+            // return response
+            return {
+                success: true,
+                message: "notification created",
+                user:response
+
+            }
+        } catch (error) {
+            return {
+                 success : false,
+                 message: "database error"
+            }
+        }
+      
+    }
+    async sendvideo(id:string|undefined,userId:string|undefined){
+        try {
+            const response = await AppointmentModel.find({_id: id});
+console.log(response);
+            if (response && response.length > 0) {
+                if (response[0].callprovider && response[0].callprovider.toString() === userId) {
+                    return response[0].userId;
+                }
+                if (response[0].userId && response[0].userId.toString() === userId) {
+                    return response[0].callprovider;
+                }
+            }
+            // 
+            
+        } catch (error) {
+            
+        }
+    }
+}
 export default UserRepository

@@ -9,6 +9,7 @@ import { errorMonitor } from "nodemailer/lib/xoauth2";
 import { UserModel } from "../infrastructure/database/userModel";
 import { response } from "express";
 import ChatModel, { Chat } from "../infrastructure/database/chat";
+import { IApimsg } from "../infrastructure/database/notification";
 
 
 class Userusecase{
@@ -455,6 +456,49 @@ try {
     throw error;
 }
 
+}
+
+async getvideo(id:string,time:string){
+    try {
+        const response = await this.userRepository.getvideo(id,time)
+        return response
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        throw error;
+    }
+}
+async video(id:string){
+    try {
+        const response = await this.userRepository.video(id)
+        return response
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        throw error;
+    }
+}
+async contact(subject:string,message:string,token:string|undefined){
+    try {
+        const claims = this.jwtToken.verifyJWT(token)
+        if(!claims) return {
+            status: 401,
+            success: false,
+            message: "Unauthenticated"
+        }
+        const id=claims.id
+        const NewAppointment: IApimsg = {
+            sender:id,
+            date:new Date(), 
+            messages:{
+                subject:subject,
+                message:message
+            }       
+         }
+        const response = await this.userRepository.contact(NewAppointment)
+        return response
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        throw error;
+    }
 }
 
 }

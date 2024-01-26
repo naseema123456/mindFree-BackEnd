@@ -17,6 +17,7 @@ router.get('/getUser/:user_id',(req,res)=>controller.getUser(req,res))
 router.post('/editUser',(req,res)=>controller.editUser(req,res))
 router.post('/Blocked',(req,res)=>controller.Bloked(req,res))
 router.get('/getMarket',(req,res)=>controller.getMarket(req,res))
+router.get('/getMessages',(req,res)=>controller.getMessages(req,res))
 
 
 export default router

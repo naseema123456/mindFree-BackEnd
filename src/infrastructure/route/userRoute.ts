@@ -20,5 +20,8 @@ router.get('/profile',(req,res)=>controller.profile(req,res))
 router.get('/appointment/:id/:time',(req,res)=>controller.appoinment(req,res))
 router.get('/getTime/:userId',(req,res)=>controller.getTime(req,res))
 router.get('/gethistory/:userId/:receiverId',(req,res)=>controller.gethistory(req,res))
+router.get('/getvideo/:userId/:time',(req,res)=>controller.getvideo(req,res))
+router.get('/video/:id',(req,res)=>controller.video(req,res))
+router.post('/contact',(req,res)=>controller.contact(req,res))
 
 export default router

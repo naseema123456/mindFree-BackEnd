@@ -10,6 +10,7 @@ import { Chat } from "../infrastructure/database/chat";
 // import { Message } from "../domain/chat";
 import ChatModel, { Message } from "../infrastructure/database/chat";
 import { text } from "stream/consumers";
+import { log } from "console";
 
 
 
@@ -341,8 +342,7 @@ class userController {
 
     async profile(req: Request, res: Response) {
         try {
-            // console.log("profile");
-            // console.log(req.headers.authorization);
+         
             const token = req.headers.authorization
             const response = await this.usercase.profile(token)
             // console.log(response.data?.user,"jjjjjjjjjj");
@@ -362,9 +362,7 @@ class userController {
 
     async appoinment(req: Request, res: Response) {
         try {
-            // console.log("hi");
-
-            // console.log(req.params);
+          
             const id = req.params.id
             const time = req.params.time
             const token = req.headers.authorization
@@ -409,7 +407,7 @@ class userController {
 
 async gethistory(req: Request, res: Response){
     try {
-        console.log(req.params);
+        // console.log(req.params);
         const userId=req.params.userId
         const receiverId=req.params.receiverId
         const chat = await this.usercase.gethistory(userId,receiverId)
@@ -419,8 +417,42 @@ async gethistory(req: Request, res: Response){
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
-
-
+async getvideo(req: Request, res: Response){
+    try {
+        console.log(req.params);
+        
+        const id=req.params.userId
+        const time=req.params.time
+        const gettime = await this.usercase.getvideo(id,time)
+        console.log(gettime,"controller");
+        
+return res.status(200).json(gettime)
+    } catch (error) {
+               console.error('Error in gethistory:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+async video(req: Request, res: Response){
+    try {
+        const id=req.params.id
+        const response = await this.usercase.video(id)
+        return res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+async contact(req: Request, res: Response){
+    try {
+console.log(req.body);
+const subject=req.body.subject
+const message=req.body.message
+const token = req.headers.authorization
+        const response = await this.usercase.contact(subject,message,token)
+        return res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 }
 
 export default userController

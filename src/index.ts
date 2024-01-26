@@ -59,21 +59,40 @@ const startServer = async () => {
                   console.error(`Socket ID not found for receiver: ${chatData.receiver}`);
                 }
               });
+              socket.on('link-event', async (sendvideo: any) => {
+                console.log(sendvideo);
+                const savedData = await userRepository.sendvideo(sendvideo.id,sendvideo.userId);
+                if(savedData){
+
+                  const savedDataString = savedData.toString();
+                  const receiverSocketId = userSockets.get(savedDataString) as string;
+                  io.to(receiverSocketId).emit('recieve-video', sendvideo.link);
+                }
+        else {
+                  // Handle the case where the receiver's socket ID is not found
+                  console.error(`Socket ID not found for receiver:`);
+                }
+              });
               
-
-
+        
+          
+            
             socket.on('disconnect', () => {
                 console.log(' user disconnected');
                 userSockets.delete(id)
             });
         });
-
+      
         server.listen(PORT, () => {
             console.log('connected to the server')
         })
+        io.listen(3001);
+
+        return io;
     } catch (error) {
         console.log(error)
     }
+    
 }
 
 startServer()
