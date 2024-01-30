@@ -88,7 +88,7 @@ class UserRepository implements UserRepository{
             // console.log(newPassword,id);
             let reset = await UserModel.updateOne({ _id: id }, { $set: { password :newPassword} });
             // console.log(reset);
-            if (reset.  modifiedCount === 1) {
+            if (reset.modifiedCount === 1) {
                 console.log('Password reset successful');
                 // You can return a success response or perform additional actions if needed
                 return { success: true, message: 'Password reset successful' };
