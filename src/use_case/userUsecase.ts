@@ -5,9 +5,7 @@ import JWTtoken from '../passwordservice/jwt';
 import OtpRepository from "../infrastructure/repository/otpRepository";
 import Otp from "../domain/otp";
 import mongoose, { Types } from "mongoose";
-import { errorMonitor } from "nodemailer/lib/xoauth2";
-import { UserModel } from "../infrastructure/database/userModel";
-import { response } from "express";
+
 import ChatModel, { Chat } from "../infrastructure/database/chat";
 import { IApimsg } from "../infrastructure/database/notification";
 
@@ -156,10 +154,11 @@ console.log(otp,id,'............');
                         };
                     }
                     
-                    
+                    console.log("before");
                     const userId = storedUser?._id?.toString() || '';
                     const role = storedUser?.role || ''
                     const token = this.jwtToken.createJWT(userId, role);
+                    console.log("after");
                    
                     // const accessToken = this.jwtToken.generateAccessToken(userId.role)
                     // const refreshToken = this.jwt.generateRefreshToken(userData._id)

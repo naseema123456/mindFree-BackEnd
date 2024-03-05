@@ -1,6 +1,5 @@
 import OTP from '../database/otp';
 import Otp from '../../domain/otp';
-import mongoose, { now } from 'mongoose';
 import {UserModel} from "../../infrastructure/database/userModel"
 
 class OtpRepository {

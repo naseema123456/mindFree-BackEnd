@@ -4,10 +4,6 @@ import http from 'http'
 import { connectDb } from './infrastructure/config/connectDb'
 import { Server, Socket } from 'socket.io'
 import { Chat } from './infrastructure/database/chat';
-import userController from './adapter/userController';
-// import { Message } from './infrastructure/database/chat';
-import ChatModel from "./infrastructure/database/chat";
-import { Message } from "./infrastructure/database/chat";
 import { log } from 'console';
 
 import Userusecase from './use_case/userUsecase';
@@ -19,7 +15,7 @@ const startServer = async () => {
     try {
         const PORT = process.env.PORT || 3000
         await connectDb()
-        const app = createServer()    
+    const app = createServer()    
         const server = http.createServer(app)
         const io = new Server(server, {
             cors: {

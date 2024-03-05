@@ -1,6 +1,5 @@
 import TradingRecord from "../../domain/trade"
 import { TradingRecordModel } from "../database/trade"; 
-import { UserModel } from '../database/userModel';
 import { AppointmentModel } from "../database/appoinment";
 import Appointment from "../../domain/appoinment";
 import { ObjectId } from 'mongodb';

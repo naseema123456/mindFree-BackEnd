@@ -52,6 +52,8 @@ class userController {
 
     async register(req: Request, res: Response) {
         try {
+            console.log("register");
+            
             let { firstName, lastName, email, password, phoneNumber } = req.body
 
 
@@ -151,18 +153,16 @@ class userController {
 
 
 
-        } catch (error: any) {
+        } catch (error) {
 
-            return res.json({ success: false, message: error.message })
+            return res.json({ success: false, message: 'an error occured try again'  })
         }
     }
     async login(req: Request, res: Response) {
         try {
+            console.log("ho");
+            
             let { email, password } = req.body
-
-
-
-
 
 
             // Validate email

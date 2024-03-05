@@ -4,7 +4,6 @@ import ChatModel, { Chat } from "../../infrastructure/database/chat";
 import { UserModel } from '../database/userModel'
 // import UserRepository from '../../use_case/interface/userController'
 import { AppointmentModel } from '../database/appoinment';
-import Appointment from '../../domain/appoinment';
 import { IApimsg } from '../database/notification';
 import { NotificationModel } from '../database/notification';
 
@@ -37,6 +36,7 @@ class UserRepository implements UserRepository{
         try {
             console.log('email exist check')
             const user = await UserModel.findOne({ email: email });
+console.log(user);
 
     
             if (user) {

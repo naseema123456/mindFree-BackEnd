@@ -8,11 +8,12 @@ const useCase = new Userusecase(repository)
 const controller = new userController(useCase)
 
 const router = express.Router()
+console.log("user");
 
 router.post('/register',(req,res)=>controller.register(req,res))
 router.post('/verify-otp',(req,res)=> controller.verifyOtp(req,res))
 router.post('/login',(req,res)=>controller.login(req,res))
-router.post('/logout',(req,res)=>controller.login(req,res))
+// router.post('/logout',(req,res)=>controller.logout(req,res))
 router.get('/resendotp/:userId',(req,res)=>controller.resendotp(req,res))
 router.get('/forgot/:otpemail',(req,res)=>controller.forgot(req,res))
 router.post('/resetpassword',(req,res)=>controller.resetpassword(req,res))

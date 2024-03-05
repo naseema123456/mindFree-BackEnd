@@ -1,10 +1,9 @@
 import { Request,Response } from "express";
 import Adminusecase from "../use_case/adminUsecase";
 import AdminRepository from "../infrastructure/repository/adminRepository";
-import {UserModel} from "../infrastructure/database/userModel";
 
 import OtpRepository from "../infrastructure/repository/otpRepository";
-import Otp from "../domain/otp"
+
 
 
 

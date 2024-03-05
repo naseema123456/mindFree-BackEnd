@@ -3,7 +3,7 @@ import adminRepository from "../infrastructure/repository/adminRepository";
 import Encrypt from '../passwordservice/hashpassword';
 import JWTtoken from '../passwordservice/jwt';
 
-import mongoose, { Types } from "mongoose";
+// import mongoose, { Types } from "mongoose";
 
 
 

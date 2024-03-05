@@ -1,8 +1,7 @@
 import { Request,Response, response } from "express";
 import callproviderUsecase from "../use_case/callproviderUsecase";
 import callproviderRepository from "../infrastructure/repository/callproviderRepository";
-import { UserModel } from "../infrastructure/database/userModel";
-import { AppointmentModel } from "../infrastructure/database/appoinment";
+
 
 
 class callproviderController{

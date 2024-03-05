@@ -10,15 +10,17 @@ export const createServer = () => {
     try {
         const app = express()
  
-        
+    
         app.use(cors({
             credentials:true,
             origin:['https://mind-free.vercel.app']
+            // origin:['http://localhost:4200']
         }))
         app.use(express.json())
         app.use(express.urlencoded({ extended: false }));
         app.use(express.static(path.join(__dirname, '../public')));
         
+
 
           // Routes
           app.use('/user', userRouter)

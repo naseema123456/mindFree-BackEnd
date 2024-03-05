@@ -1,9 +1,8 @@
 import { Request,Response } from "express";
-import {UserModel} from "../infrastructure/database/userModel";
-import JWTtoken from '../passwordservice/jwt';
+
 import profileUsecase from "../use_case/profileUsecase";
 import profileRepository from "../infrastructure/repository/profileRepository";
-import Adminusecase from "../use_case/adminUsecase";
+
 
 
 
